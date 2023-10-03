@@ -1,0 +1,86 @@
+---
+title: "Homework 2"
+author: "Shina Min"
+date: '`r format(Sys.time(), "%Y-%m-%d")`'
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, message = FALSE)
+```
+
+### Problem 0
+
+This solution focuses on a reproducible report containing code and text necessary for Problems 1-3, and is organized as an R Project. This was not prepared as a GitHub repo; examples for repository structure and git commits should be familiar from other elements of the course.
+
+Throughout, we use appropriate text to describe our code and results, and use clear styling to ensure code is readable. 
+
+```{r load_libraries}
+library(tidyverse)
+library(readxl)
+```
+
+
+### Problem 1
+
+We clean the 538 `pols` data, which provides information on the number of national politicians who are democratic or republican at any given time. There are some values for which `prez_gop` is `2` -- these are months in which Ford became President following Nixon's resignation. In the new `president` variable created as part of our data cleaning, we code these as `gop` (same as values when `prez_gop` is `1`).
+
+```{r clean_538_pols}
+month_df = 
+  tibble(
+    month_num = 1:12,
+    month_abb = month.abb,
+    month = month.name
+  )
+
+pols = 
+  read_csv("./data/fivethirtyeight_datasets/pols-month.csv") |>
+  separate(mon, into = c("year", "month_num", "day"), convert = TRUE) |>
+  mutate(
+    president = recode(prez_gop, "0" = "dem", "1" = "gop", "2" = "gop")) |>
+  left_join(x = _, y = month_df) |> 
+  select(year, month, everything(), -day, -starts_with("prez")) 
+```
+
+We also clean the 538 `snp` data, which contains information related to Standard & Poor’s stock market index.
+
+```{r clean_538_snp}
+snp = 
+  read_csv(
+    "./data/fivethirtyeight_datasets/snp.csv",
+    col_types = cols(date = col_date(format = "%m/%d/%y"))) |>
+  separate(date, into = c("year", "month_num", "day"), convert = TRUE) |>
+  mutate(
+    year = if_else(year > 2023, year - 100, year)) |> 
+  left_join(x = _, y = month_df) |> 
+  select(year, month, close) 
+```
+
+Finally, we tidy the `unemployment` data so that it can be merged with the `pols` and `snp` datasets.
+
+```{r clean_538_unemp}
+unemployment = 
+  read_csv("./data/fivethirtyeight_datasets/unemployment.csv") |>
+  rename(year = Year) |>
+  pivot_longer(
+    Jan:Dec, 
+    names_to = "month_abb",
+    values_to = "unemployment"
+  ) |> 
+  left_join(x = _, y = month_df) |> 
+  select(year, month, unemployment)
+```
+
+Now we merge the three datasets!
+
+```{r merge_538}
+data_538 = 
+  left_join(pols, snp) |>
+  left_join(x = _, y = unemployment)
+
+str(data_538)
+```
+
+Notice that there are some `NA` values in the `close` and `unemployment` variables, which indicate that the value of these variables is missing at those locations.
+
+Let's talk about the 538 datasets. The `pols` data has `r nrow(pols)` observations and `r ncol(pols)` variables and tells us about the party affiliation distribution (democrat or republican) for governors and senators for a given year from years `r pols |> pull(year) |> min()` to `r pols |> pull(year) |> max()`. It also tells us whether the sitting president was a democrat or republican. The `snp` data has `r nrow(snp)` observations and `r ncol(snp)` variables, ranging from years `r snp |> pull(year) |> min()` to `r snp |> pull(year) |> max()`. The `unemployment` data has `r nrow(unemployment)` observations and `r ncol(unemployment)` variables ranging from years `r unemployment |> pull(year) |> min()` to `r unemployment |> pull(year) |> max()`. In Januarys in or after 1975 in which a democrat was president, the **average unemployment rate was `r filter(data_538, month == "January", year >= 1975, president == "dem") |> pull(unemployment) |> mean() |> round(2)`**.  The average unemployment rate over the same time period in which a republican was president was `r filter(data_538, month == "January", year >= 1975, president == "gop") |> pull(unemployment) |> mean() |> round(2)`.
