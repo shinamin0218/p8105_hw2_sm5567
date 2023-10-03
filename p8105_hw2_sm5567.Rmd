@@ -33,13 +33,13 @@ month_df =
     month = month.name
   )
 
-pols = 
-  read_csv("./data/fivethirtyeight_datasets/pols-month.csv") |>
+pols =
+  read_csv("./fivethirtyeight_datasets/pols-month.csv") |>
   separate(mon, into = c("year", "month_num", "day"), convert = TRUE) |>
   mutate(
     president = recode(prez_gop, "0" = "dem", "1" = "gop", "2" = "gop")) |>
   left_join(x = _, y = month_df) |> 
-  select(year, month, everything(), -day, -starts_with("prez")) 
+  select(year, month, everything(), -day, -starts_with("prez"))
 ```
 
 We also clean the 538 `snp` data, which contains information related to Standard & Poor’s stock market index.
@@ -47,7 +47,7 @@ We also clean the 538 `snp` data, which contains information related to Standard
 ```{r clean_538_snp}
 snp = 
   read_csv(
-    "./data/fivethirtyeight_datasets/snp.csv",
+    "./fivethirtyeight_datasets/snp.csv",
     col_types = cols(date = col_date(format = "%m/%d/%y"))) |>
   separate(date, into = c("year", "month_num", "day"), convert = TRUE) |>
   mutate(
@@ -60,7 +60,7 @@ Finally, we tidy the `unemployment` data so that it can be merged with the `pols
 
 ```{r clean_538_unemp}
 unemployment = 
-  read_csv("./data/fivethirtyeight_datasets/unemployment.csv") |>
+  read_csv("./fivethirtyeight_datasets/unemployment.csv") |>
   rename(year = Year) |>
   pivot_longer(
     Jan:Dec, 
