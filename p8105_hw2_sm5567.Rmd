@@ -153,13 +153,7 @@ Import, clean, and tidy the dataset of baseline demographics. Ensure that sex an
 mci_df =
   read_csv("data_mci/MCI_baseline.csv", skip = 1) %>%
   janitor::clean_names() %>%
-  mutate(sex = recode(sex, `0` = "male", `1` = "female")) %>%
-
-
-    
-  
-  
-
+  mutate(sex = recode(sex, `0` = "male", `1` = "female"))
 ```
 
 
