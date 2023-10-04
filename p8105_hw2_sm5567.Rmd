@@ -154,8 +154,8 @@ mci_df =
   read_csv("data_mci/MCI_baseline.csv", skip = 1) %>%
   janitor::clean_names() %>%
   mutate(sex = recode(sex, `0` = "male", `1` = "female")) %>%
-  mutate(apoe4 = recode(apoe4, "1" = "carrier", "0" = "non-carrier"))
-  
+  mutate(apoe4 = recode(apoe4, "1" = "carrier", "0" = "non-carrier")) %>%
+  filter(age_at_onset == ".", age_at_onset > current_age)
 ```
 
 
