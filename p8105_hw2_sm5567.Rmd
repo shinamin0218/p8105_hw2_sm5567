@@ -112,6 +112,12 @@ prof_trash_wheel =
              sheet = "Professor Trash Wheel",
              range = cell_cols("A:M")) %>%
   janitor::clean_names()
+
+gwy_trash_wheel =
+  read_excel("./202309 Trash Wheel Collection Data.xlsx",
+             sheet = "Gwynnda Trash Wheel",
+             range = cell_cols("A:J")) %>%
+  janitor::clean_names()
 ```
 
 
