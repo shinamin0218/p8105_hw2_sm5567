@@ -152,22 +152,25 @@ Import, clean, and tidy the dataset of baseline demographics. Ensure that sex an
 
 ```{r}
 mci_df =
-  read_csv("data_mci/MCI_baseline.csv", skip = 1, na = '.') %>%
+  read_csv("data_mci/MCI_baseline.csv", skip = 1, na = ".") %>%
   janitor::clean_names() %>%
   mutate(sex = recode(sex, `0` = "male", `1` = "female")) %>%
   mutate(apoe4 = recode(apoe4, "1" = "carrier", "0" = "non-carrier")) %>%
   filter(age_at_onset != ".", age_at_onset > current_age)
+
+female_apoe4 =
+  filter(mci_df, sex == "female")
+nrow(female_apoe4)
 ```
 
 Discuss important steps in the import process and relevant features of the dataset. How many participants were recruited, and of these how many develop MCI? What is the average baseline age? What proportion of women in the study are APOE4 carriers? (ASK)
 ```{r}
 mean(mci_df$current_age)
 
-
 ```
 * Number of participants were reurited is 479 (from the datasets), ___ people develop MCI 
 * The mean age of baseline age is 65.542
-* The proportion of women in the study that are also APOE4 carriers is ___
+* The proportion of women in the study that are also APOE4 carriers is 48.
 
 
 Similarly, import, clean, and tidy the dataset of longitudinally observed biomarker values; comment on the steps on the import process and the features of the dataset. (NEED)
