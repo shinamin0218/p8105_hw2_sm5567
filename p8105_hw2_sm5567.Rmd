@@ -98,29 +98,45 @@ library(readxl)
 library(dplyr)
 ```
 
-## Read and clean the Mr. Trash Wheel sheet
+## Read and clean the Mr. Trash Wheel, Professor Trash Wheel and Gwynnd data sheet
 
 ```{r}
 mr_trash_wheel =
   read_excel("./202309 Trash Wheel Collection Data.xlsx",
              sheet = "Mr. Trash Wheel",
              range = cell_cols("A:N")) %>%
-  janitor::clean_names()
+  janitor::clean_names() %>%
+  drop_na(dumpster) %>%
+  mutate(homes_powered = (weight_tons * 500) / 30,
+         trash_wheel_data = 1,
+         year = as.numeric(year))
 
 prof_trash_wheel =
   read_excel("./202309 Trash Wheel Collection Data.xlsx",
              sheet = "Professor Trash Wheel",
              range = cell_cols("A:M")) %>%
-  janitor::clean_names()
+  janitor::clean_names() %>%
+  drop_na(dumpster) %>%
+  mutate(homes_powered = (weight_tons * 500) / 30,
+         trash_wheel_data = 2)
 
 gwy_trash_wheel =
   read_excel("./202309 Trash Wheel Collection Data.xlsx",
              sheet = "Gwynnda Trash Wheel",
              range = cell_cols("A:J")) %>%
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  drop_na(dumpster) %>%
+  mutate(homes_powered = (weight_tons * 500) / 30,
+         trash_wheel_data = 3)
 ```
 
+## Merging three data sets
 
+```{r}
+trash_wheel_data =
+ bind_rows(mr_trash_wheel, prof_trash_wheel, gwy_trash_wheel) %>%
+  janitor::clean_names()
+```
 
 
 
