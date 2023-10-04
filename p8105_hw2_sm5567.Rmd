@@ -145,5 +145,27 @@ The `prof_trash_wheel` dataset includes 14 variables and 106 observations. The a
 Lastly, the `gwy_trash_wheel` dataset has 13 variables and 155 observations. The average number of homes powered is 48.6 and the total weight of trash collected is 452 tons. The total number of cigarette butts collected by Gwynnda in July of 2021 is 16300.
 
 
+### Problem 3
 
+Import, clean, and tidy the dataset of baseline demographics. Ensure that sex and APOE4 carrier status are appropriate encoded (i.e. not numeric), and remove any participants who do not meet the stated inclusion criteria (i.e. no MCI at baseline). Discuss important steps in the import process and relevant features of the dataset. How many participants were recruited, and of these how many develop MCI? What is the average baseline age? What proportion of women in the study are APOE4 carriers?
+
+```{r}
+mci_df =
+  read_csv("data_mci/MCI_baseline.csv", skip = 1) %>%
+  janitor::clean_names() %>%
+  mutate(sex = recode(sex, `0` = "male", `1` = "female")) %>%
+
+
+    
+  
+  
+
+```
+
+
+Similarly, import, clean, and tidy the dataset of longitudinally observed biomarker values; comment on the steps on the import process and the features of the dataset.
+
+
+
+Check whether some participants appear in only the baseline or amyloid datasets, and comment on your findings. Combine the demographic and biomarker datasets so that only participants who appear in both datasets are retained, and briefly describe the resulting dataset; export the result as a CSV to your data directory.
 
