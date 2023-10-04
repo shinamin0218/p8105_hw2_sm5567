@@ -92,21 +92,32 @@ This problem uses the Mr. Trash Wheel dataset, available as an Excel file on the
 
 Read and clean the Mr. Trash Wheel sheet:
 
-specify the sheet in the Excel file and to omit non-data entries (rows with notes / figures; columns containing notes) using arguments in read_excel
-use reasonable variable names
-omit rows that do not include dumpster-specific data
-
 ```{r}
 library(tidyverse)
 library(readxl)
+library(dplyr)
 ```
-
 
 ## Read and clean the Mr. Trash Wheel sheet
 
 ```{r}
-trash_wheel_data = read_excel("./trash_wheel_data.xlsx")
-trash_wheel_data = janitor::clean_names(trash_wheel_data)
+mr_trash_wheel =
+  read_excel("./202309 Trash Wheel Collection Data.xlsx",
+             sheet = "Mr. Trash Wheel",
+             range = cell_cols("A:N")) %>%
+  janitor::clean_names()
+
+prof_trash_wheel =
+  read_excel("./202309 Trash Wheel Collection Data.xlsx",
+             sheet = "Professor Trash Wheel",
+             range = cell_cols("A:M")) %>%
+  janitor::clean_names()
 ```
+
+
+
+
+
+
 
 
