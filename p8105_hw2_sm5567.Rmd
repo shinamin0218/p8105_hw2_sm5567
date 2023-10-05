@@ -1,7 +1,7 @@
 ---
 title: "Homework 2"
 author: "Shina Min"
-date: '`r format(Sys.time(), "%Y-%m-%d")`'
+date: "10_04_2023"
 output: github_document
 ---
 
@@ -90,7 +90,6 @@ Let's talk about the 538 datasets. The `pols` data has `r nrow(pols)` observatio
 
 This problem uses the Mr. Trash Wheel dataset, available as an Excel file on the course website.
 
-Read and clean the Mr. Trash Wheel sheet:
 
 ```{r}
 library(tidyverse)
@@ -142,11 +141,11 @@ trash_wheel_data =
 trash_wheel_data ## loading the merged datasets
 ```
 
-* In the `mr_trash_wheel` dataset, there are 15 variables, and 584 observations. The average number of homes powered is 53.3 and the total weight of trash collected is 1875 tons.
+* In the `r`mr_trash_wheel` dataset, there are 15 variables, and 584 observations. The average number of homes powered is 53.3 and the total weight of trash collected is 1875 tons.
 
-* The `prof_trash_wheel` dataset includes 14 variables and 106 observations. The average number of homes powered is 34. The total weight of trash collected is 216 tons.
+* The `r`prof_trash_wheel` dataset includes 14 variables and 106 observations. The average number of homes powered is 34. The total weight of trash collected is 216 tons.
 
-* Lastly, the `gwy_trash_wheel` dataset has 12 variables and 155 observations. The average number of homes powered is 48.6 and the total weight of trash collected is 452 tons. The total number of cigarette butts collected by Gwynnda in July of 2021 is 16300.
+* Lastly, the `r`gwy_trash_wheel` dataset has 12 variables and 155 observations. The average number of homes powered is 48.6 and the total weight of trash collected is 452 tons. The total number of cigarette butts collected by Gwynnda in July of 2021 is 16300.
 
 
 ### Problem 3
@@ -167,13 +166,13 @@ female_apoe4 =
 nrow(female_apoe4) ## the proportion of women who are APOE4 carriers using nrow function
 ```
 
-* To import, clean and tidy the dataset of baseline demographics, I started giving the data set a name. I defined the baseline data as `mci_df()`.
+* To import, clean and tidy the dataset of baseline demographics, I started giving the data set a name. I defined the baseline data as `r`mci_df()`.
 * I had to remove the first row of data due to it containing repeat information that is already found in the columns.
-* Then, I read mci_df in csv, using `read_csv` function I learned in lectures.
-* Next, I cleaned the names by using `janitor::clean_names()` function.
-* Since sex data is in numeric values (male = 0, female =1), I changed the values to male and female by using `mutate()` and `recode()`function as I learned in class.
-* I also changed APOE4 carieer status from numeric values to carrier and non-carrier. In order to change the APOE4 status, I also used `mutate()` function and `recode()` function.
-* Lastly, to eliminate any participants who do not meet the stated inclusion criteria (with no MCI at baseline), I used `filter()` function by putting `!` sign in front of the `.` data (no MCI at baseline) and kept all other columns by specifying the condition using `age_at_onset > current_age`.
+* Then, I read mci_df in csv, using `r `read_csv` function I learned in lectures.
+* Next, I cleaned the names by using `r`janitor::clean_names()` function.
+* Since sex data is in numeric values (male = 0, female =1), I changed the values to male and female by using `r `mutate()` and `r `recode()`function as I learned in class.
+* I also changed APOE4 carieer status from numeric values to carrier and non-carrier. In order to change the APOE4 status, I also used `r `mutate()` function and `r `recode()` function.
+* Lastly, to eliminate any participants who do not meet the stated inclusion criteria (with no MCI at baseline), I used `r `filter()` function by putting `!` sign in front of the `.` data (no MCI at baseline) and kept all other columns by specifying the condition using `r `age_at_onset > current_age`.
 
 
 ## Number of people developed MCI, the average baseline age and the proportion of APOE4 carrier women.
@@ -186,6 +185,7 @@ ncol(mci_df)
 filter(mci_df, age_at_onset !=".") %>%
   nrow()
 ```
+
 * Number of participants were reurited is 479 (from the datasets), 93 people develop MCI during the study. In the study contained `r nrow(mci_df)`, participants and had 'r ncol(mci_df)` variables. of the `r nrow(mci_df)` participants recruited at baseline, `r filter(mci_df, age_at_onset !=".") |> nrow()` developed MCI during the study.
 * The mean age of baseline age is 65.542. I used `r mean(mci_df$current_age)` function to find the mean age of baseline age.
 * The proportion of women in the study that are also APOE4 carriers is 48. To find this proportion, I used `r female_apoe4 = filter(mci_df, sex == "female")` and then `r nrow(female_apoe4)` and got 48.
@@ -226,3 +226,4 @@ All participants in `mci_df` (baseline) are in `amyloid_df`. However, participan
 write.csv(all_data, "data_mci/baseline_amyloid_merged.csv")
 ```
 
+* I exported the `all_data` (combined data), using `write.csv` function and stored in my `data_mci` folder as "baseline_amyloid_merged.csv"
