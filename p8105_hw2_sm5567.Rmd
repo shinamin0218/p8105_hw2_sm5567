@@ -136,7 +136,7 @@ gwy_trash_wheel =
 
 ```{r}
 trash_wheel_data =
- bind_rows(mr_trash_wheel, prof_trash_wheel, gwy_trash_wheel) %>% ## merging datasets
+ bind_rows(mr_trash_wheel, prof_trash_wheel, gwy_trash_wheel) %>% ## merging datasets using bind_row function
   janitor::clean_names() ## cleaning the names, using the janitor function
 trash_wheel_data ## loading the merged datasets
 ```
