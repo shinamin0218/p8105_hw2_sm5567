@@ -185,8 +185,7 @@ filter(mci_df, age_at_onset !=".") %>%
 ```
 * Number of participants were reurited is 479 (from the datasets), 93 people develop MCI during the study. In the study contained `r nrow(mci_df)`, participants and had 'r ncol(mci_df)` variables. of the `r nrow(mci_df)` participants recruited at baseline, `r filter(mci_df, age_at_onset !=".") |> nrow()` developed MCI during the study.
 * The mean age of baseline age is 65.542. I used `r mean(mci_df$current_age)` function to find the mean age of baseline age.
-* The proportion of women in the study that are also APOE4 carriers is 48.
-
+* The proportion of women in the study that are also APOE4 carriers is 48. To find this proportion, I used `r `female_apoe4 = filter(mci_df, sex == "female")` and then `r nrow(female_apoe4)` and got 48.
 
 ## Importing, cleaning and tidying the dataset of longitudinally observed biomarker values.
 
