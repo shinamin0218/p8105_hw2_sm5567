@@ -218,7 +218,7 @@ all_data ## combining all the datasets by using inner_join function
 
 
 
-## Participants appear in only the amyloid datasets:
+## Participants appear in only the baseline or amyloid datasets, and findings:
 
 All participants in `mci_df` (baseline) are in `amyloid_df`. However, participants with study id's from 472 to 495 are only in the `amyloid_df`. Without specific information, I could assume that some participants may only present in the `amyloid_df` and not the `mci_df` (baseline) because of participants being added to the dataset after the baseline data collection started. 
 
