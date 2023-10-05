@@ -129,27 +129,29 @@ gwy_trash_wheel =
   mutate(homes_powered = (weight_tons * 500) / 30,
          trash_wheel_data = 3)
 ```
+* To load the `mr_trash_wheel` dataset, I used the `read_excel` function and specified the sheet and range by using `sheet` and `range` functions. Then I cleaned the name using the `janitor::clean_names()` function. I dropped the dumpster data (unnecessary data that doesn't incoude dumpster-specific data). I used calculation described in the Homes powered note and updated the data to include a new homes_powered variable based on this calculation by using the `mutate()` function, multiplying `weight_tons` by 500 and divded them with 30. Lastly, I converted the year variable to a numeric data tye by using the `as.numeric()`.
+* I repeated the same step for the rest of `prof_trash_wheel` dataset and `gwy_trash_wheel` dataset.
 
 ## Merging three data sets
 
 ```{r}
 trash_wheel_data =
- bind_rows(mr_trash_wheel, prof_trash_wheel, gwy_trash_wheel) %>%
-  janitor::clean_names()
-trash_wheel_data
+ bind_rows(mr_trash_wheel, prof_trash_wheel, gwy_trash_wheel) %>% ## merging datasets
+  janitor::clean_names() ## cleaning the names, using the janitor function
+trash_wheel_data ## loading the merged datasets
 ```
 
-In the `mr_trash_wheel` dataset, there are 15 variables, and 584 observations. The average number of homes powered is 53.3 and the total weight of trash collected is 1875 tons.
+*In the `mr_trash_wheel` dataset, there are 15 variables, and 584 observations. The average number of homes powered is 53.3 and the total weight of trash collected is 1875 tons.
 
-The `prof_trash_wheel` dataset includes 14 variables and 106 observations. The average number of homes powered is 34. The total weight of trash collected is 216 tons.
+*The `prof_trash_wheel` dataset includes 14 variables and 106 observations. The average number of homes powered is 34. The total weight of trash collected is 216 tons.
 
-Lastly, the `gwy_trash_wheel` dataset has 12 variables and 155 observations. The average number of homes powered is 48.6 and the total weight of trash collected is 452 tons. The total number of cigarette butts collected by Gwynnda in July of 2021 is 16300.
+*Lastly, the `gwy_trash_wheel` dataset has 12 variables and 155 observations. The average number of homes powered is 48.6 and the total weight of trash collected is 452 tons. The total number of cigarette butts collected by Gwynnda in July of 2021 is 16300.
 
 
 ### Problem 3
 
 ## Importing, cleaning and tidying the dataset + mutating status + removing participants do not meet the criteria.
-Import, clean, and tidy the dataset of baseline demographics. Ensure that sex and APOE4 carrier status are appropriate encoded (i.e. not numeric), and remove any participants who do not meet the stated inclusion criteria (i.e. no MCI at baseline).
+
 ```{r}
 mci_df =
   read_csv("data_mci/MCI_baseline.csv", skip = 1, na = ".") %>% ## reading mci_df in csv
@@ -161,29 +163,34 @@ mci_df =
 
 female_apoe4 =
   filter(mci_df, sex == "female")
-nrow(female_apoe4) ## The proportion of women who are APOE4 carriers using nrow function
+nrow(female_apoe4) ## the proportion of women who are APOE4 carriers using nrow function
 ```
 
-* To import, clean and tidy the dataset of baseline demographics, I started giving the data set a name. I defined the baseline data as `mci_df`.
+* To import, clean and tidy the dataset of baseline demographics, I started giving the data set a name. I defined the baseline data as `mci_df()`.
+* I had to remove the first row of data due to it containing repeat information that is already found in the columns.
 * Then, I read mci_df in csv, using `read_csv` function I learned in lectures.
 * Next, I cleaned the names by using `janitor::clean_names()` function.
-* Since sex data is in numeric values (male = 0, female =1), I changed the values to male and female by using `mutate()` function as I learned in class.
+* Since sex data is in numeric values (male = 0, female =1), I changed the values to male and female by using `mutate()` and `recode()`function as I learned in class.
 * I also changed APOE4 carieer status from numeric values to carrier and non-carrier. In order to change the APOE4 status, I also used `mutate()` function and `recode()` function.
 * Lastly, to eliminate any participants who do not meet the stated inclusion criteria (with no MCI at baseline), I used `filter()` function by putting `!` sign in front of the `.` data (no MCI at baseline) and kept all other columns by specifying the condition using `age_at_onset > current_age`.
 
-
 Discuss important steps in the import process and relevant features of the dataset. How many participants were recruited, and of these how many develop MCI? What is the average baseline age? What proportion of women in the study are APOE4 carriers? (ASK)
 ```{r}
-mean(mci_df$current_age) ## the mean age of baseline age
+mean(mci_df$current_age) ## finding the mean age of baseline age
+
+nrow(mci_df)
+ncol(mci_df)
+filter(mci_df, age_at_onset !=".") %>%
+  nrow()
 ```
-* Number of participants were reurited is 479 (from the datasets), ___ people develop MCI 
+* Number of participants were reurited is 479 (from the datasets), 93 people develop MCI during the study. In the study contained `r nrow(mci_df)`, participants and had 'r ncol(mci_df)` variables. of the `r nrow(mci_df)` participants recruited at baseline, `r filter(mci_df, age_at_onset !=".") |> nrow()` developed MCI during the study.
 * The mean age of baseline age is 65.542
 * The proportion of women in the study that are also APOE4 carriers is 48.
 
 
-comment on the steps on the import process and the features of the dataset. (NEED)
-## Importing, cleaning and tidying the dataset of longitudinally observed biomarker values
-```{r}
+## Importing, cleaning and tidying the dataset of longitudinally observed biomarker values.
+
+```{r, echo = FALSE}
 amyloid_df =
   read.csv("data_mci/mci_amyloid.csv", skip =1) %>% ## reading amyloid_df in read_csv
   janitor::clean_names() ## cleaning names, using janitor::clean_names function
@@ -191,16 +198,28 @@ amyloid_df =
 colnames(amyloid_df)[colnames(amyloid_df) == "study_id"] = "id"
 ## Specifying what are the column names by using colnames function
 
-amyloid_df
-
 all_data =
-  full_join(mci_df, amyloid_df, by = "id")
+  inner_join(mci_df, amyloid_df, by = "id")
 all_data ## Merging all the datasets by using full_join function
+
 ```
+
+* I had to remove the first row of data due to it containing repeat information that is already found in the columns.
 
 Check whether some participants appear in only the baseline or amyloid datasets, and comment on your findings.
 
-* Participants appear in only the baseline datasets: antijoin_ (two steps to do it)
+## Finding participants only appear in the baseline dataset.
+```{r}
+
+```
+
+* Participants appear in only the baseline datasets:
+
+## Finding participants only appear in the amyloid dataset.
+```{r}
+
+```
+
 * Participants appear in only the amyloid datasets:
 
 
