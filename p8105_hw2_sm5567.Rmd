@@ -129,6 +129,7 @@ gwy_trash_wheel =
   mutate(homes_powered = (weight_tons * 500) / 30,
          trash_wheel_data = 3)
 ```
+
 * To load the `mr_trash_wheel` dataset, I used the `read_excel` function and specified the sheet and range by using `sheet` and `range` functions. Then I cleaned the name using the `janitor::clean_names()` function. I dropped the dumpster data (unnecessary data that doesn't incoude dumpster-specific data). I used calculation described in the Homes powered note and updated the data to include a new homes_powered variable based on this calculation by using the `mutate()` function, multiplying `weight_tons` by 500 and divded them with 30. Lastly, I converted the year variable to a numeric data tye by using the `as.numeric()`.
 * I repeated the same step for the rest of `prof_trash_wheel` dataset and `gwy_trash_wheel` dataset.
 
@@ -141,11 +142,11 @@ trash_wheel_data =
 trash_wheel_data ## loading the merged datasets
 ```
 
-*In the `mr_trash_wheel` dataset, there are 15 variables, and 584 observations. The average number of homes powered is 53.3 and the total weight of trash collected is 1875 tons.
+* In the `mr_trash_wheel` dataset, there are 15 variables, and 584 observations. The average number of homes powered is 53.3 and the total weight of trash collected is 1875 tons.
 
-*The `prof_trash_wheel` dataset includes 14 variables and 106 observations. The average number of homes powered is 34. The total weight of trash collected is 216 tons.
+* The `prof_trash_wheel` dataset includes 14 variables and 106 observations. The average number of homes powered is 34. The total weight of trash collected is 216 tons.
 
-*Lastly, the `gwy_trash_wheel` dataset has 12 variables and 155 observations. The average number of homes powered is 48.6 and the total weight of trash collected is 452 tons. The total number of cigarette butts collected by Gwynnda in July of 2021 is 16300.
+* Lastly, the `gwy_trash_wheel` dataset has 12 variables and 155 observations. The average number of homes powered is 48.6 and the total weight of trash collected is 452 tons. The total number of cigarette butts collected by Gwynnda in July of 2021 is 16300.
 
 
 ### Problem 3
@@ -176,6 +177,7 @@ nrow(female_apoe4) ## the proportion of women who are APOE4 carriers using nrow 
 
 
 ## Number of people developed MCI, the average baseline age and the proportion of APOE4 carrier women.
+
 ```{r}
 mean(mci_df$current_age) ## finding the mean age of baseline age
 
@@ -188,7 +190,7 @@ filter(mci_df, age_at_onset !=".") %>%
 * The mean age of baseline age is 65.542. I used `r mean(mci_df$current_age)` function to find the mean age of baseline age.
 * The proportion of women in the study that are also APOE4 carriers is 48. To find this proportion, I used `r female_apoe4 = filter(mci_df, sex == "female")` and then `r nrow(female_apoe4)` and got 48.
 
-## Importing, cleaning and tidying the dataset of longitudinally observed biomarker values.
+## Importing, cleaning, tidying and combining the dataset of longitudinally observed biomarker values.
 
 ```{r, echo = FALSE}
 amyloid_df =
@@ -205,30 +207,18 @@ all_data ## Merging all the datasets by using full_join function
 ```
 
 * I had to remove the first row of data due to it containing repeat information that is already found in the columns. 
-*Then I read the `amyloid_df` in csv by using the `read.csv` function. Next, I cleaned the name by using the `janitor::clean_names()` function.
-* To specify the column names, I used `colnames(amyloid_df)` and defined "student_id" as "id". I renamed the `study_id` variable to `id` for consistency when merging.
+* Then I read the `amyloid_df` in csv by using the `read.csv` function. Next, I cleaned the name by using the `janitor::clean_names()` function.
+* To specify the column names, I used `colnames(amyloid_df)` and renamed `student_id` to "id" for consistency when merging.
 * The dataset contains participant information during the study's follow-up period.
 * Key variables include `id` and `baseline`, as well as fixed time intervals labeled `time_2`, `time_4`, `time_6`, and `time_8`.
 * Lastly, I merged all the datasets of `mci_df` and `amyloid_df` by using the `inner_join()` function.
 * I printed out the dataset, putting the `all_data` function.
 * I hid the long dataset of `all_data` by using `echo = FALSE` function next to the {r}.
 
-Check whether some participants appear in only the baseline or amyloid datasets, and comment on your findings.
 
-## Finding participants only appear in the baseline dataset.
-```{r}
+## Participants appear in only the amyloid datasets:
+All participants in `mci_df` (baseline) are in `amyloid_df`. However, participants with study id's from 472 to 495 are only in the `amyloid_df`. Without specific information, I could assume that some participants may only present in the `amyloid_df` and not the `mci_df` (baseline) because of participants being added to the dataset after the baseline data collection started. 
 
-```
-
-* Participants appear in only the baseline datasets:
-
-## Finding participants only appear in the amyloid dataset.
-```{r}
-
-```
-
-* Participants appear in only the amyloid datasets:
-
-
-Combine the demographic and biomarker datasets so that only participants who appear in both datasets are retained, and briefly describe the resulting dataset; export the result as a CSV to your data directory. (ASK)
+## Exporting the result as a CSV to my data directory. 
+ 
 
