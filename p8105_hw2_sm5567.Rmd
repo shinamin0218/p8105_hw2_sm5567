@@ -173,6 +173,7 @@ nrow(female_apoe4) ## the proportion of women who are APOE4 carriers using nrow 
 * Since sex data is in numeric values (male = 0, female =1), I changed the values to male and female by using `r `mutate()` and `r `recode()`function as I learned in class.
 * I also changed APOE4 carieer status from numeric values to carrier and non-carrier. In order to change the APOE4 status, I also used `r `mutate()` function and `r `recode()` function.
 * Lastly, to eliminate any participants who do not meet the stated inclusion criteria (with no MCI at baseline), I used `r `filter()` function by putting `!` sign in front of the `.` data (no MCI at baseline) and kept all other columns by specifying the condition using `r `age_at_onset > current_age`.
+* `mci_df` has 93 observations and 6 variables whereas, `female_apoe4` has 48 observations of 6 variables. Key variables includ `id`, `current_age`, `sex`, `education`, `apoe4`, and `age_at_onset`. 
 
 
 ## Number of people developed MCI, the average baseline age and the proportion of APOE4 carrier women.
@@ -188,7 +189,7 @@ filter(mci_df, age_at_onset !=".") %>%
 
 * Number of participants were reurited is 479 (from the datasets), 93 people develop MCI during the study. In the study contained `r nrow(mci_df)`, participants and had 'r ncol(mci_df)` variables. of the `r nrow(mci_df)` participants recruited at baseline, `r filter(mci_df, age_at_onset !=".") |> nrow()` developed MCI during the study.
 * The mean age of baseline age is 65.542. I used `r mean(mci_df$current_age)` function to find the mean age of baseline age.
-* The proportion of women in the study that are also APOE4 carriers is 48. To find this proportion, I used `r female_apoe4 = filter(mci_df, sex == "female")` and then `r nrow(female_apoe4)` and got 48.
+* The proportion of women in the study that are also APOE4 carriers is 48 %. To find this proportion, I used `r female_apoe4 = filter(mci_df, sex == "female")` and then `r nrow(female_apoe4)` and got 48.
 
 ## Importing, cleaning, tidying and combining the dataset of longitudinally observed biomarker values.
 
@@ -210,10 +211,12 @@ all_data ## combining all the datasets by using inner_join function
 * Then I read the `amyloid_df` in csv by using the `read.csv` function. Next, I cleaned the name by using the `janitor::clean_names()` function.
 * To specify the column names, I used `colnames(amyloid_df)` and renamed `student_id` to "id" for consistency when merging.
 * The dataset contains participant information during the study's follow-up period.
-* Key variables include `id` and `baseline`, as well as fixed time intervals labeled `time_2`, `time_4`, `time_6`, and `time_8`.
+* `amyloid_df` has 487 observations of 6 variables. Key variables include `id` and `baseline`, as well as fixed time intervals labeled `time_2`, `time_4`, `time_6`, and `time_8`.
 * Lastly, I merged all the datasets of `mci_df` and `amyloid_df` by using the `inner_join()` function.
 * I printed out the dataset, putting the `all_data` function.
 * I hid the long dataset of `all_data` by using `echo = FALSE` function next to the {r}.
+* `all_data` has 90 observations and 11 variables including current_age, sex, education, apoe4, age_at_onset, baseline, time2, time4, time6, and time8.
+
 
 
 ## Participants appear in only the amyloid datasets:
