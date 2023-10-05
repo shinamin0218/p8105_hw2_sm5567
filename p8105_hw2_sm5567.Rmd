@@ -192,7 +192,7 @@ filter(mci_df, age_at_onset !=".") %>%
 
 ## Importing, cleaning, tidying and combining the dataset of longitudinally observed biomarker values.
 
-```{r, echo = FALSE}
+```{r}
 amyloid_df =
   read.csv("data_mci/mci_amyloid.csv", skip =1) %>% ## reading amyloid_df in read_csv
   janitor::clean_names() ## cleaning names, using janitor::clean_names function
@@ -202,7 +202,7 @@ colnames(amyloid_df)[colnames(amyloid_df) == "study_id"] = "id"
 
 all_data =
   inner_join(mci_df, amyloid_df, by = "id")
-all_data ## Merging all the datasets by using full_join function
+all_data ## combining all the datasets by using inner_join function
 
 ```
 
