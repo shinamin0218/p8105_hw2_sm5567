@@ -199,7 +199,7 @@ amyloid_df =
   janitor::clean_names() ## cleaning names, using janitor::clean_names function
 
 colnames(amyloid_df)[colnames(amyloid_df) == "study_id"] = "id"
-## Specifying what are the column names by using colnames function
+## Specifying the column names by using colnames function
 
 all_data =
   inner_join(mci_df, amyloid_df, by = "id")
@@ -209,7 +209,7 @@ all_data ## combining all the datasets by using inner_join function
 
 * I had to remove the first row of data due to it containing repeat information that is already found in the columns. 
 * Then I read the `amyloid_df` in csv by using the `read.csv` function. Next, I cleaned the name by using the `janitor::clean_names()` function.
-* To specify the column names, I used `colnames(amyloid_df)` and renamed `student_id` to "id" for consistency when merging.
+* To specify the column names, I used `colnames(amyloid_df)` and renamed `student_id` to `id` for consistency when merging.
 * The dataset contains participant information during the study's follow-up period.
 * `amyloid_df` has 487 observations of 6 variables. Key variables include `id` and `baseline`, as well as fixed time intervals labeled `time_2`, `time_4`, `time_6`, and `time_8`.
 * Lastly, I merged all the datasets of `mci_df` and `amyloid_df` by using the `inner_join()` function.
