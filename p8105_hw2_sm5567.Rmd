@@ -214,7 +214,6 @@ all_data ## combining all the datasets by using inner_join function
 * `amyloid_df` has 487 observations of 6 variables. Key variables include `id` and `baseline`, as well as fixed time intervals labeled `time_2`, `time_4`, `time_6`, and `time_8`.
 * Lastly, I merged all the datasets of `mci_df` and `amyloid_df` by using the `inner_join()` function.
 * I printed out the dataset, putting the `all_data` function.
-* I hid the long dataset of `all_data` by using `echo = FALSE` function next to the {r}.
 * `all_data` has 90 observations and 11 variables including current_age, sex, education, apoe4, age_at_onset, baseline, time2, time4, time6, and time8.
 
 
@@ -222,6 +221,7 @@ all_data ## combining all the datasets by using inner_join function
 ## Participants appear in only the amyloid datasets:
 
 All participants in `mci_df` (baseline) are in `amyloid_df`. However, participants with study id's from 472 to 495 are only in the `amyloid_df`. Without specific information, I could assume that some participants may only present in the `amyloid_df` and not the `mci_df` (baseline) because of participants being added to the dataset after the baseline data collection started. 
+
 
 ## Exporting the result as a CSV to my data directory. 
  
