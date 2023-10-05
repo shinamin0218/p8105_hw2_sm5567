@@ -148,48 +148,51 @@ Lastly, the `gwy_trash_wheel` dataset has 12 variables and 155 observations. The
 
 ### Problem 3
 
-Import, clean, and tidy the dataset of baseline demographics. Ensure that sex and APOE4 carrier status are appropriate encoded (i.e. not numeric), and remove any participants who do not meet the stated inclusion criteria (i.e. no MCI at baseline). (CHECK)
-
+## Importing, cleaning and tidying the dataset + mutating status + removing participants do not meet the criteria.
+Import, clean, and tidy the dataset of baseline demographics. Ensure that sex and APOE4 carrier status are appropriate encoded (i.e. not numeric), and remove any participants who do not meet the stated inclusion criteria (i.e. no MCI at baseline).
 ```{r}
 mci_df =
-  read_csv("data_mci/MCI_baseline.csv", skip = 1, na = ".") %>%
-  janitor::clean_names() %>%
+  read_csv("data_mci/MCI_baseline.csv", skip = 1, na = ".") %>% ## reading mci_df in csv
+  janitor::clean_names() %>% ## cleaning the names, using the janitor function
   mutate(sex = recode(sex, `0` = "male", `1` = "female")) %>%
   mutate(apoe4 = recode(apoe4, "1" = "carrier", "0" = "non-carrier")) %>%
   filter(age_at_onset != ".", age_at_onset > current_age)
+## selecting some variables and then mutating and then getting rid of the missing values.
 
 female_apoe4 =
   filter(mci_df, sex == "female")
-nrow(female_apoe4)
+nrow(female_apoe4) ## The proportion of women who are APOE4 carriers using nrow function
 ```
 
 Discuss important steps in the import process and relevant features of the dataset. How many participants were recruited, and of these how many develop MCI? What is the average baseline age? What proportion of women in the study are APOE4 carriers? (ASK)
 ```{r}
-mean(mci_df$current_age)
-
+mean(mci_df$current_age) ## the mean age of baseline age
 ```
 * Number of participants were reurited is 479 (from the datasets), ___ people develop MCI 
 * The mean age of baseline age is 65.542
 * The proportion of women in the study that are also APOE4 carriers is 48.
 
 
-Similarly, import, clean, and tidy the dataset of longitudinally observed biomarker values; comment on the steps on the import process and the features of the dataset. (NEED)
+comment on the steps on the import process and the features of the dataset. (NEED)
+## Importing, cleaning and tidying the dataset of longitudinally observed biomarker values
 ```{r}
 amyloid_df =
-  read.csv("data_mci/mci_amyloid.csv", skip =1) %>%
-  janitor::clean_names()
+  read.csv("data_mci/mci_amyloid.csv", skip =1) %>% ## reading amyloid_df in read_csv
+  janitor::clean_names() ## cleaning names, using janitor::clean_names function
 
 colnames(amyloid_df)[colnames(amyloid_df) == "study_id"] = "id"
+## Specifying what are the column names by using colnames function
+
 amyloid_df
 
 all_data =
   full_join(mci_df, amyloid_df, by = "id")
-all_data
+all_data ## Merging all the datasets by using full_join function
 ```
 
 Check whether some participants appear in only the baseline or amyloid datasets, and comment on your findings.
 
-* Participants appear in only the baseline datasets:
+* Participants appear in only the baseline datasets: antijoin_ (two steps to do it)
 * Participants appear in only the amyloid datasets:
 
 
